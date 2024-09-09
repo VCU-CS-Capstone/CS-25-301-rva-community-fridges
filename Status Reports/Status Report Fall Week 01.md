@@ -1,6 +1,6 @@
 # *CS 25-301 Community Fridges Usage Data Acquisition*
 
-## Week of Month DD (xx of 16)
+## Week of August 18 (1 of 16)
 
 **Students' Names: Ethan Leyden, Damian Ashjian, Jermane Jackson, Khuong Nguyen**
 
@@ -9,12 +9,11 @@
 **Faculty Advisor: Dr. Daniel Cranston**
 
 ## 1) Accomplishments this week ##
-   - make flowcharts done by students A and B
+   - Complete bidding on capstone projects
 
 ## 2) Milestones to be completed next week ##
-   - debug the code to be performed by student C
+   - Have the first meeting with faculty advisor
 
 ## 3) Issues, problems or concerns ##
-   - student C needs to learn java
-   - database repository costs big $$$
+   - No issues to report. 
    
