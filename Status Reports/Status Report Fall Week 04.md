@@ -1,6 +1,6 @@
 # _CS 25-301 Community Fridges Usage Data Acquisition_
 
-## Week of Month DD (04 of 16)
+## Week of September 8 (04 of 16)
 
 **Students' Names: Ethan Leyden, Damian Ashjian, Jermane Jackson, Khuong Nguyen**
 
@@ -21,4 +21,4 @@
 
 ## 3) Issues, problems or concerns
 
-- Need to acquire devices to begin testing our theories and finalize data transmission plan
+- Need to acquire devices to begin testing theories and finalize data transmission plan
