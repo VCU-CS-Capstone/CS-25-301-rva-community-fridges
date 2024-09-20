@@ -1,5 +1,7 @@
 # Setting up the Arduino Development Environment
 
+**CRITICAL: BEFORE YOU PLUG IN THE DEVICE, CONNECT THE ANTENNA.** Failure to connect the antenna may burn out the radio. 
+
 ## Hardware and software
 [LoRa Board that we used](https://www.amazon.com/dp/B076MSLFC9/ref=sspa_dk_detail_0?psc=1&pd_rd_i=B076MSLFC9&pd_rd_w=5rwFT&content-id=amzn1.sym.953c7d66-4120-4d22-a777-f19dbfa69309&pf_rd_p=953c7d66-4120-4d22-a777-f19dbfa69309&pf_rd_r=32W9SXEYE5R034EX0BZ8&pd_rd_wg=GpSNP&pd_rd_r=c83327df-7025-4040-92db-4c535a094845&s=pc&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWwy)
 
@@ -32,6 +34,8 @@ Go to downloads, and download the drivers for your OS.
 
 [Follow the instructions](https://meshtastic.org/docs/getting-started/flashing-firmware/esp32/) for flashing the device with Meshtastic firmware.
 
+### Using the Web App
+
 1. Visit [https://flasher.meshtastic.org](https://flasher.meshtastic.org/) in Chrome or Edge. [Link to GitHub for flasher](https://github.com/meshtastic/web-flasher).
 2. Make sure the device is plugged in to your computer
 3. Select the following configurations:
@@ -47,3 +51,15 @@ Go to downloads, and download the drivers for your OS.
 7. Turn on "Full Erase and Intall"
 8. Click the big green button "Erase Flash and Install". Wait a couple of minutes for the LoRa device to turn off, and update. When I did it, it turned back on after a while. **Some instructions indicate that you need to press the physical `RST` button on the device**. 
 
+### Using the Python CLI
+
+1. Install the `esptool` package with `pip install --upgrade esptool`
+2. Confirm communication with the board by running `esptool chip_id` (if the `esptool` command is not found, you may need to run `python -m esptool` instead)
+
+## Connecting and Configuring the Device
+
+1. Open the Arduino IDE. Go to Settings, and add the following link to add the board configurations and libraries to the Arduino Library index: `https://resource.heltec.cn/download/package_heltec_esp32_index.json`
+2. With the board plugged in (**make sure the antenna is plugged in first!**), select the USB Serial port `/dev/cu.SLAB_USBtoUART`, and type in "ESP32" and select `ESP32 Dev Board` from the list
+3. Arduino should prompt you to install the appropriate library, and click "Yes". 
+4. Originally, we selected the wrong board. Select "WiFi LoRa 32(V3).
+5. Select the template `File > Examples > Heltec ESP32 Dev-Boards > Factory_Test > WiFi_LoRa_32_V3 > WiFi_LoRa_32_V3_FactoryTest_V1`
