@@ -1,0 +1,22 @@
+// Used in USA, Canada and South America
+//     Uplink:
+//     903.9 - SF7BW125 to SF10BW125
+//     904.1 - SF7BW125 to SF10BW125
+//     904.3 - SF7BW125 to SF10BW125
+//     904.5 - SF7BW125 to SF10BW125
+//     904.7 - SF7BW125 to SF10BW125
+//     904.9 - SF7BW125 to SF10BW125
+//     905.1 - SF7BW125 to SF10BW125
+//     905.3 - SF7BW125 to SF10BW125
+//     904.6 - SF8BW500
+
+//     Downlink:
+//     923.3 - SF7BW500 to SF12BW500 (RX1)
+//     923.9 - SF7BW500 to SF12BW500 (RX1)
+//     924.5 - SF7BW500 to SF12BW500 (RX1)
+//     925.1 - SF7BW500 to SF12BW500 (RX1)
+//     925.7 - SF7BW500 to SF12BW500 (RX1)
+//     926.3 - SF7BW500 to SF12BW500 (RX1)
+//     926.9 - SF7BW500 to SF12BW500 (RX1)
+//     927.5 - SF7BW500 to SF12BW500 (RX1)
+//     923.3 - SF12BW500 (RX2)

@@ -11,6 +11,8 @@
 
 [Follow the Meshtastic Instructions](https://meshtastic.org/docs/getting-started/serial-drivers/esp32/)
 
+# Meshtastic Setup
+
 ## Driver installation
 
 USB Driver for the linked board: [CP210X USB to UART bridge - Download](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers)
@@ -51,10 +53,34 @@ Go to downloads, and download the drivers for your OS.
 7. Turn on "Full Erase and Intall"
 8. Click the big green button "Erase Flash and Install". Wait a couple of minutes for the LoRa device to turn off, and update. When I did it, it turned back on after a while. **Some instructions indicate that you need to press the physical `RST` button on the device**. 
 
-### Using the Python CLI
+### Using the Python CLI (Successful)
 
 1. Install the `esptool` package with `pip install --upgrade esptool`
 2. Confirm communication with the board by running `esptool chip_id` (if the `esptool` command is not found, you may need to run `python -m esptool` instead)
+3. Go to [https://meshtastic.org/downloads/] and download the firmware `.zip`
+4. Go to [https://meshtastic.org/docs/hardware/devices/] and identify the page for your device ([HELTEC® LoRa 32](https://meshtastic.org/docs/hardware/devices/heltec-automation/lora32/?heltec=v23))
+5. Under **Resources**, the name of the file which contains the firmware should be listed. In our case it is `firmware-heltec-v3-X.X.X.xxxxxxx.bin`. As of September 26, 2024 there are two files in the directory that match this format: `firmware-heltec-v3-2.4.2.5b45303-update.bin` and `firmware-heltec-v3-2.4.2.5b45303.bin`
+6. In the terminal, navigate into the `firmware/` directory, and execute `./device-install.sh -f firmware-BOARD-VERSION.bin`. If an update file exists for your version of firmware, subsequently execute `./device-update.sh -f firmware-BOARD-VERSION-update.bin`. See the image for an example.
+7. At this point the device should show the Meshtastic logo and the LED will be flashing. 
+
+![](firmware_flash_cli_example.png)
+
+### Configuration
+
+#### Web Client
+1. Go to [https://client.meshtastic.org/], and add a new device via the serial port (only works in Chrome or Edge). 
+2. The device we just flashed should appear, and the dashboard should populate with info and configuration settings about your device. If the device name appears as "Unknown" or "UNK", the flashing process **likely** didn't execute correctly. 
+3. Connecting the iPhone App will be easier with a fixed Bluetooth PIN. I chose `52024` for this capstone project. Configure this in the Bluetooth setting and move on to the iPhone App configuration.
+4. Any changes made to the configuration in this client won't be sent to the device until you save them by clicking the save icon in the top right corner. 
+
+#### iPhone App
+
+1. Download the Meshtastic App on iPhone (You can do Android, but the instructions may be different). 
+2. If the device is powered on, it should appear in the app. Select it and enter the PIN we created earlier. 
+
+- Bluetooth PIN: `52024` (graduation month/year)
+
+# Setup without Meshtastic
 
 ## Connecting and Configuring the Device
 
@@ -71,5 +97,5 @@ Go to downloads, and download the drivers for your OS.
 [OLED API -- 404 Error]()
 
 To push code to the device, we'll use the example in `examples/OLED_Simple`. 
-1. Open the code in the latest version of the Arduino IDE
+1. Open the code in the latest version of the Arduino IDE. You'll need to install the appropriate Heltec ESPS32 Libraries within Arduino. 
 2. Compile and upload the code to the device using "Upload Using Programmer" (`Shift+Cmd+U` on Mac).
