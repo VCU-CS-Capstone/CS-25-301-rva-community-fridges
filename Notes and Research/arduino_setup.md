@@ -63,3 +63,13 @@ Go to downloads, and download the drivers for your OS.
 3. Arduino should prompt you to install the appropriate library, and click "Yes". 
 4. Originally, we selected the wrong board. Select "WiFi LoRa 32(V3).
 5. Select the template `File > Examples > Heltec ESP32 Dev-Boards > Factory_Test > WiFi_LoRa_32_V3 > WiFi_LoRa_32_V3_FactoryTest_V1`
+
+## Writing Software for the device
+
+[Lora API](https://github.com/HelTecAutomation/Heltec_ESP32/blob/master/src/lora/API.md)
+
+[OLED API -- 404 Error]()
+
+To push code to the device, we'll use the example in `examples/OLED_Simple`. 
+1. Open the code in the latest version of the Arduino IDE
+2. Compile and upload the code to the device using "Upload Using Programmer" (`Shift+Cmd+U` on Mac).
