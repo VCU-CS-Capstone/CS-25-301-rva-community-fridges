@@ -9,11 +9,12 @@
 
 [Download the Meshtastic Library](https://www.arduino.cc/reference/en/libraries/meshtastic/)
 
-[Follow the Meshtastic Instructions](https://meshtastic.org/docs/getting-started/serial-drivers/esp32/)
 
 # Meshtastic Setup
 
 ## Driver installation
+
+[Follow the Meshtastic Instructions](https://meshtastic.org/docs/getting-started/serial-drivers/esp32/)
 
 USB Driver for the linked board: [CP210X USB to UART bridge - Download](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers)
 
@@ -99,3 +100,8 @@ Go to downloads, and download the drivers for your OS.
 To push code to the device, we'll use the example in `examples/OLED_Simple`. 
 1. Open the code in the latest version of the Arduino IDE. You'll need to install the appropriate Heltec ESPS32 Libraries within Arduino. 
 2. Compile and upload the code to the device using "Upload Using Programmer" (`Shift+Cmd+U` on Mac).
+
+### Meshtastic Arduino Library Dependencies
+
+- [nanopb](https://jpa.kapsi.fi/nanopb/download/)
+ - [Instructions on installing nanopb](https://www.dfrobot.com/blog-1161.html)

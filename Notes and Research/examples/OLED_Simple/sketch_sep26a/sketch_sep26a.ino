@@ -148,4 +148,5 @@ void loop() {
   }
   counter++;
   delay(10);
+  Serial.println("Updating Display...");
 }

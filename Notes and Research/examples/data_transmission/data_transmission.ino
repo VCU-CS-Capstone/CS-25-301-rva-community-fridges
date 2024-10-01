@@ -1,22 +1,52 @@
-// Used in USA, Canada and South America
-//     Uplink:
-//     903.9 - SF7BW125 to SF10BW125
-//     904.1 - SF7BW125 to SF10BW125
-//     904.3 - SF7BW125 to SF10BW125
-//     904.5 - SF7BW125 to SF10BW125
-//     904.7 - SF7BW125 to SF10BW125
-//     904.9 - SF7BW125 to SF10BW125
-//     905.1 - SF7BW125 to SF10BW125
-//     905.3 - SF7BW125 to SF10BW125
-//     904.6 - SF8BW500
+// For a connection via I2C using the Arduino Wire include:
+#include <Wire.h>               
+#include "HT_SSD1306Wire.h"
+#include <lora/LoRa.h>
 
-//     Downlink:
-//     923.3 - SF7BW500 to SF12BW500 (RX1)
-//     923.9 - SF7BW500 to SF12BW500 (RX1)
-//     924.5 - SF7BW500 to SF12BW500 (RX1)
-//     925.1 - SF7BW500 to SF12BW500 (RX1)
-//     925.7 - SF7BW500 to SF12BW500 (RX1)
-//     926.3 - SF7BW500 to SF12BW500 (RX1)
-//     926.9 - SF7BW500 to SF12BW500 (RX1)
-//     927.5 - SF7BW500 to SF12BW500 (RX1)
-//     923.3 - SF12BW500 (RX2)
+static SSD1306Wire  display(0x3c, 500000, SDA_OLED, SCL_OLED, GEOMETRY_128_64, RST_OLED); // addr , freq , i2c group , resolution , rst
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println();
+  Serial.println();
+  VextON();
+  delay(100);
+
+  // Initialising the UI will init the display too.
+  display.init();
+  // if(!LoRa.begin(915E6, 1)) {
+  //   display.setTextAlignment(TEXT_ALIGN_LEFT);
+  //   display.setFont(ArialMT_Plain_10);
+  //   display.drawString(0, 0, "LoRa Failed.");
+  // }
+
+}
+
+
+void VextON(void)
+{
+  pinMode(Vext,OUTPUT);
+  digitalWrite(Vext, LOW);
+}
+
+void VextOFF(void) //Vext default OFF
+{
+  pinMode(Vext,OUTPUT);
+  digitalWrite(Vext, HIGH);
+}
+
+void loop() {
+  // clear the display
+  display.clear();
+  // draw the current demo method
+  display.setTextAlignment(TEXT_ALIGN_LEFT);
+  display.setFont(ArialMT_Plain_10);
+  display.drawString(0, 0, "Hello world");
+
+  // write the buffer to the display
+  display.display();
+
+  
+  delay(5000);
+  Serial.println("Hello world!");
+}
