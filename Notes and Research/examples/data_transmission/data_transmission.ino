@@ -4,8 +4,10 @@
 #include <lora/LoRa.h>
 
 static SSD1306Wire  display(0x3c, 500000, SDA_OLED, SCL_OLED, GEOMETRY_128_64, RST_OLED); // addr , freq , i2c group , resolution , rst
-
+LoRaClass lora_instance;
+int LoRa_status = 0;
 void setup() {
+  
   Serial.begin(115200);
   Serial.println();
   Serial.println();
@@ -14,11 +16,10 @@ void setup() {
 
   // Initialising the UI will init the display too.
   display.init();
-  // if(!LoRa.begin(915E6, 1)) {
-  //   display.setTextAlignment(TEXT_ALIGN_LEFT);
-  //   display.setFont(ArialMT_Plain_10);
-  //   display.drawString(0, 0, "LoRa Failed.");
-  // }
+
+  try {
+    LoRa_status = lora_instance.begin(915E6, 1); 
+    } catch { }
 
 }
 
@@ -39,10 +40,15 @@ void loop() {
   // clear the display
   display.clear();
   // draw the current demo method
-  display.setTextAlignment(TEXT_ALIGN_LEFT);
-  display.setFont(ArialMT_Plain_10);
-  display.drawString(0, 0, "Hello world");
-
+  if (LoRa_status) {
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.setFont(ArialMT_Plain_10);
+    display.drawString(0, 0, "Hello world");
+  } else {
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.setFont(ArialMT_Plain_10);
+    display.drawString(0, 0, "LoRa setup failed. ");
+  }
   // write the buffer to the display
   display.display();
 
