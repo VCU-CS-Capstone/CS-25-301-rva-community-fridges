@@ -91,6 +91,16 @@ Go to downloads, and download the drivers for your OS.
 4. Originally, we selected the wrong board. Select "WiFi LoRa 32(V3).
 5. Select the template `File > Examples > Heltec ESP32 Dev-Boards > Factory_Test > WiFi_LoRa_32_V3 > WiFi_LoRa_32_V3_FactoryTest_V1`
 
+## License Activation
+
+The license for the ESP32 chip may need to be activated following [these instructions](https://docs.heltec.org/general/how_to_use_license.html).
+
+1. Get the chip id
+2. Visit the website linked in the above documentation to compute the 32 bit license ID.
+3. Flash code to the device containing that license ID in an array
+4. Send the command `AT+CDKEY=XXXXX....XXXX` to the device
+5. The code should start running now. 
+
 ## Writing Software for the device
 
 [Lora API](https://github.com/HelTecAutomation/Heltec_ESP32/blob/master/src/lora/API.md)
@@ -100,6 +110,10 @@ Go to downloads, and download the drivers for your OS.
 To push code to the device, we'll use the example in `examples/OLED_Simple`. 
 1. Open the code in the latest version of the Arduino IDE. You'll need to install the appropriate Heltec ESPS32 Libraries within Arduino. 
 2. Compile and upload the code to the device using "Upload Using Programmer" (`Shift+Cmd+U` on Mac).
+
+### Node to Node communication
+
+[Read article](https://docs.heltec.org/general/lora_node_to_node.html)
 
 ### Meshtastic Arduino Library Dependencies
 
