@@ -56,6 +56,8 @@ Go to downloads, and download the drivers for your OS.
 
 ### Using the Python CLI (Successful)
 
+**NOTE:** If there is already firmware on the device, erase the firmware with `esptool erase_flash`
+
 1. Install the `esptool` package with `pip install --upgrade esptool`
 2. Confirm communication with the board by running `esptool chip_id` (if the `esptool` command is not found, you may need to run `python -m esptool` instead)
 3. Go to [https://meshtastic.org/downloads/] and download the firmware `.zip`
