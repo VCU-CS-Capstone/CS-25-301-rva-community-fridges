@@ -16,13 +16,3 @@
 1. When has a refrigerator door been accessed?
 2. (Optional) How much food has been taken/left in the refrigerator?
 3. Collect the data to a central location where it can be analyzed or summarized
-
-**Deliverables**
-
-
-**Coding Plan**
-
-| Week | Tasks | Goals |
-|------|-------|-------|
-| _Week 1_ | _Task 1_ | _Goal 1_ |
-| ... | ... | ... |
