@@ -1,0 +1,5 @@
+# this file contains default parameters for the refrigerator module. 
+# override configs in config.yaml by copying the parameter name and 
+# setting a new value
+interval_seconds: 5   
+server: http://localhost:3000/api/fridgedata  
