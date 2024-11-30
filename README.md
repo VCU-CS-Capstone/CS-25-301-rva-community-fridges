@@ -1,7 +1,7 @@
 # Community Fridges Usage Data Acquisition
 ## About this Project
 [RVA Community Fridges](https://www.rvacommunityfridges.com/) is a mutual aid group aimed at combating food insecurity throughout and around Richmond, Virginia. This repository is for the [VCU senior capstone project](https://egr.vcu.edu/capstone/) to provide a way to collect usage data of these refrigerators. Usage data will help the organization acquire funding and understand how these fridges are being utilized in their communities. 
-
+ 
 ## Project Team
 - *Taylor Scott* - *RVA Community Fridges* - Sponsor
 - *Dr. Daniel Cranston* - *VCU Department of Computer Science* - Faculty Advisor
