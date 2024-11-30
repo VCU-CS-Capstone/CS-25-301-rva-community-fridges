@@ -15,6 +15,6 @@ app.post('/api/fridgedata', (req, res) => {
   res.send("Recieved!\n");
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`Server is running on port ${port}`);
 });

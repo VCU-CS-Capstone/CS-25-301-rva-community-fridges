@@ -44,6 +44,8 @@ if __name__ == "__main__":
         if res.status_code >= 400:
             print(f"Error sending data: {data}")
 
+        # PRINT RESPONSE
+        print(f"Response: {res.status_code}\n\n{res.text}")
 
         # wait until the next interval
         time.sleep(config['interval_seconds'])
