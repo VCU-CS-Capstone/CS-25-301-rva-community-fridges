@@ -4,3 +4,9 @@
 interval_seconds: 5   
 #server: http://localhost:3000/api/fridgedata
 server: https://rvacf-test-bb7706080ec2.herokuapp.com/api/fridgedata
+
+headers:
+  Discord_header:
+    Authorization: 'Bot ${token}'
+    User-Agent: 'DiscordBot ${User-Agent}'
+    Content-Type: 'application/json'
