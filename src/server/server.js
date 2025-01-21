@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import db from './db.js';
 
 const app = express();
 const port = 3000;
@@ -13,6 +14,14 @@ app.post('/api/fridgedata', (req, res) => {
 
   // END DATA PROCESSING
   res.send("Recieved!\n");
+});
+
+app.get('/test_database', async (req, res) => {
+    const dbRes = await db.query(
+        'SELECT f.location FROM refridgerator as f' 
+    )
+    //Output fridges from database in an html unorder list
+    res.send('<ul>' + dbRes.rows.map(instance => 'Fridge: ' + instance['location']).join('<br>') + '</ul>');
 });
 
 app.listen(process.env.PORT || port, () => {
