@@ -51,9 +51,12 @@ def main():
         data = {}
         # PACKAGE SENSOR DATA FOR SENDING
 
-        data['t'] = read_temp() if hasTemp else None
+        data['p'] = CONFIG['fridge_id'] # unique id for the fridge
+        data['d'] = 20 # number of times the door was opened since the last request.
+        data['t'] = read_temp()[1] if hasTemp else None # current temperature of the fridge
 
         # SEND THE DATA
+        print(data)
         res = requests.post(CONFIG['server'],json=data)
         if res.status_code >= 400:
             print(f"Error sending data: {data}")
