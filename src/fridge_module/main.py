@@ -21,6 +21,8 @@ except IndexError:
     hasTemp = False
 device_file = device_folder + '/w1_slave'
 
+def printerr(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
 def read_temp_raw():
     f = open(device_file, 'r')
     lines = f.readlines()
@@ -108,7 +110,7 @@ def config_discordbot():
         DISCORD_TOKEN = os.getenv('token')
 
         if CHANNEL_ID is None or DISCORD_TOKEN is None:
-            raise AttributeError("Error: either the channel id or discord token is missing")
+            printerr("Error: either the channel id or discord token is missing")
 
     except AttributeError as e:
         print(f'{e}')
