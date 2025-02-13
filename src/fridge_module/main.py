@@ -1,11 +1,43 @@
 import yaml # pip install pyyaml
-import time, sys, json, requests
+import time, sys, json, requests, glob
 from dotenv import load_dotenv 
 import os
 
 CHANNEL_ID = None 
 DISCORD_TOKEN = None 
 DISCORD_URL = 'https://discord.com/api/v10'
+
+# configure the temperature sensor
+os.system('modprobe w1-gpio')
+os.system('modprobe w1-therm')
+base_dir = '/sys/bus/w1/devices/'
+device_folder = glob.glob(base_dir + '28*')
+# Unsure if this logic will need to change if the door sensor is added. 
+try:
+    device_folder = device_folder[0]
+    hasTemp = True
+except IndexError:
+    device_folder = ""
+    hasTemp = False
+device_file = device_folder + '/w1_slave'
+
+def read_temp_raw():
+    f = open(device_file, 'r')
+    lines = f.readlines()
+    f.close()
+    return lines
+
+def read_temp():
+    lines = read_temp_raw()
+    while lines[0].strip()[-3:] != 'YES':
+        time.sleep(0.2)
+        lines = read_temp_raw()
+    equals_pos = lines[1].find('t=')
+    if equals_pos != -1:
+        temp_string = lines[1][equals_pos+2:]
+        temp_c = float(temp_string) / 1000.0
+        temp_f = temp_c * 9.0 / 5.0 + 32.0
+        return temp_c, temp_f
 
 def main():
 		
@@ -18,7 +50,8 @@ def main():
     while True:
         data = {}
         # PACKAGE SENSOR DATA FOR SENDING
-        data['test'] = 5
+
+        data['t'] = read_temp() if hasTemp else None
 
         # SEND THE DATA
         res = requests.post(CONFIG['server'],json=data)
@@ -72,7 +105,7 @@ def config_discordbot():
         DISCORD_TOKEN = os.getenv('token')
 
         if CHANNEL_ID is None or DISCORD_TOKEN is None:
-            raise AttributeError("Error: either the channel id or discord token in missing")
+            raise AttributeError("Error: either the channel id or discord token is missing")
 
     except AttributeError as e:
         print(f'{e}')
