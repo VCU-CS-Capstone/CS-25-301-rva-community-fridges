@@ -71,7 +71,6 @@ def main():
     CONFIG = config_yaml()
 
     # setup door sensor
-    GPIO.cleanup()
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(CONFIG['door_sensor_pin'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.add_event_detect(CONFIG['door_sensor_pin'], GPIO.BOTH, callback=door_callback, bouncetime=300)

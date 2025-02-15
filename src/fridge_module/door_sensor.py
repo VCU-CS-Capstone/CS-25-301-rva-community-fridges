@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time, sys, signal
 
-DOOR_SENSOR_PIN=23
+DOOR_SENSOR_PIN=18
 
 GPIO.setmode(GPIO.BCM)
 
