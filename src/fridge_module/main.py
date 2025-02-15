@@ -4,7 +4,7 @@ import requests # pip install requests
 # if testing on a non-Pi device, comment out this line and replace the door sensor data with a test value
 import RPi.GPIO as GPIO # pip install RPi.GPIO ---or--- sudo apt-get install python-rpi.gpio
 from datetime import datetime
-import time, sys, json, glob, signal, os
+import time, sys, json, glob, signal, os, threading
 
 CHANNEL_ID = None 
 DISCORD_TOKEN = None 
@@ -24,6 +24,9 @@ except IndexError:
     hasTemp = False
 device_file = device_folder + '/w1_slave'
 
+door_count = 0  # Shared variable for door open count
+door_lock = threading.Lock()  # Ensures thread safety when updating door_count
+
 def timestamp():
     return f"[{datetime.now().strftime('%m-%d-%y %H:%M')}]"
 
@@ -31,10 +34,8 @@ def printerr(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 def read_temp_raw():
-    f = open(device_file, 'r')
-    lines = f.readlines()
-    f.close()
-    return lines
+    with open(device_file, 'r') as f:
+        return f.readlines()
 
 def read_temp():
     lines = read_temp_raw()
@@ -45,23 +46,33 @@ def read_temp():
     if equals_pos != -1:
         temp_string = lines[1][equals_pos+2:]
         temp_c = float(temp_string) / 1000.0
-        temp_f = temp_c * 9.0 / 5.0 + 32.0
-        return temp_c, temp_f
+        return temp_c * 9.0 / 5.0 + 32.0 # convert to F
+    return None # no temperature sensor
+
+def door_callback(channel):
+    """ Callback function for door sensor. """
+    global door_count
+    with door_lock:
+        if GPIO.input(channel):  # Door opened
+            door_count += 1
+            print(f"{timestamp()} Door opened {door_count} times since last transmission.")
+        else:
+            print(f"{timestamp()} Door closed.")
+
+def monitor_temperature(interval, data):
+    """ Thread function to read temperature at a fixed interval. """
+    while True:
+        data['t'] = read_temp() if hasTemp else None
+        time.sleep(interval)
 
 def main():
+    global door_count
 		
     CONFIG = config_yaml()
 
     # setup door sensor
-    door_count = 0
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(CONFIG['door_sensor_pin'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    def door_callback(channel):
-        if GPIO.input(CONFIG['door_sensor_pin']):
-            door_count += 1
-            print(f"{timestamp()} Door opened {door_count} times since last transmission.")
-        else: 
-            print(f"{timestamp()} Door closed. ")
     GPIO.add_event_detect(CONFIG['door_sensor_pin'], GPIO.BOTH, callback=door_callback, bouncetime=300)
 
     # setup discord bot
@@ -70,15 +81,26 @@ def main():
     send_alert_to_bot(CONFIG)
     '''
 
+    data = {
+        'p': CONFIG['fridge_id'],  # Fridge ID
+        'd': 0,  # Door count
+        't': None  # Temperature
+    }
+
+    # Start a thread to monitor temperature
+    # door['t'] is set in this method
+    temp_thread = threading.Thread(target=monitor_temperature, args=(CONFIG['interval_seconds'], data), daemon=True)
+    temp_thread.start()
+
+    print(f"{timestamp()} Monitoring fridge...")
+
 	# Start the module loop
     while True:
-        data = {}
         # PACKAGE SENSOR DATA FOR SENDING
+        with door_lock:
+            data['d'] = door_count # number of times the door was opened since the last request.
+            door_count = 0
 
-        data['p'] = CONFIG['fridge_id'] # unique id for the fridge
-        data['d'] = door_count # number of times the door was opened since the last request.
-        door_count = 0 # reset our counter
-        data['t'] = read_temp()[1] if hasTemp else None # current temperature of the fridge
 
         # SEND THE DATA
         print(f"{timestamp()} Sending: {data}")
