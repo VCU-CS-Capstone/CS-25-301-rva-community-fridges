@@ -12,7 +12,9 @@ def door_callback(channel):
         print("Opened")
     else: 
         print("Closed")
-
+# 'bouncetime' is used to prevent switch bouncing, which is when 
+# a mechanical switch (like a door sensor) rapidly toggles between 
+# states due to vibrations or imperfections in the contact surfaces.
 GPIO.add_event_detect(DOOR_SENSOR_PIN, GPIO.BOTH, callback=door_callback, bouncetime=300)
 
 try:

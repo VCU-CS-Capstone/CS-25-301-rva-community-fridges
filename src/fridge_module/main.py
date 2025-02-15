@@ -1,7 +1,8 @@
 import yaml # pip install pyyaml
-import time, sys, json, requests, glob
-from dotenv import load_dotenv 
-import os
+from dotenv import load_dotenv # pip install python-dotenv
+import requests # pip install requests
+import RPi.GPIO as GPIO # if testing on a non-Pi device, comment out this line and replace the door sensor data with a test value
+import time, sys, json, glob, signal, os
 
 CHANNEL_ID = None 
 DISCORD_TOKEN = None 
@@ -21,8 +22,12 @@ except IndexError:
     hasTemp = False
 device_file = device_folder + '/w1_slave'
 
+def timestamp():
+    return f"[{datetime.now().strftime("%m-%d-%y %H:%M")}]"
+
 def printerr(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
+
 def read_temp_raw():
     f = open(device_file, 'r')
     lines = f.readlines()
@@ -44,27 +49,43 @@ def read_temp():
 def main():
 		
     CONFIG = config_yaml()
+
+    # setup door sensor
+    door_count = 0
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(CONFIG['door_sensor_pin'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    def door_callback(channel):
+        if GPIO.input(CONFIG['door_sensor_pin']):
+            door_count += 1
+            print(f"{timestamp()} Door opened {door_count} times since last transmission.")
+        else: 
+            print(f"{timestamp()} Door closed. ")
+    GPIO.add_event_detect(CONFIG['door_sensor_pin'], GPIO.BOTH, callback=door_callback, bouncetime=300)
+
+    # setup discord bot
     config_discordbot()
     '''Method that will send alert to discord when a door has been left open	
     send_alert_to_bot(CONFIG)
     '''
+
 	# Start the module loop
     while True:
         data = {}
         # PACKAGE SENSOR DATA FOR SENDING
 
         data['p'] = CONFIG['fridge_id'] # unique id for the fridge
-        data['d'] = 20 # number of times the door was opened since the last request.
+        data['d'] = door_count # number of times the door was opened since the last request.
+        door_count = 0 # reset our counter
         data['t'] = read_temp()[1] if hasTemp else None # current temperature of the fridge
 
         # SEND THE DATA
-        print(data)
+        print(f"{timestamp} Sending: {data}")
         res = requests.post(CONFIG['server'],json=data)
         if res.status_code >= 400:
-            print(f"Error sending data: {data}")
+            print(f"{timestamp} Error sending data: {data}")
 
         # PRINT RESPONSE
-        print(f"Response: {res.status_code}\n\n{res.text}")
+        print(f"{timestamp} Response: {res.status_code}\n\n{res.text}")
 
         # wait until the next interval
         time.sleep(CONFIG['interval_seconds'])
@@ -75,8 +96,8 @@ def config_yaml():
         with open('default.yaml', 'r') as def_config_file: 
             config = yaml.safe_load(def_config_file)
     except Exception as e:
-        print(f"An error occurred while opening the default configuration file: {e}")
-        print("Unable to start refrigerator module without default parameters. Exiting...")
+        print(f"{timestamp} An error occurred while opening the default configuration file: {e}")
+        print(f"{timestamp} Unable to start refrigerator module without default parameters. Exiting...")
         sys.exit(1)
     try: # override any defaults found in config.yaml
         with open('config.yaml', 'r') as config_file:
@@ -84,8 +105,8 @@ def config_yaml():
             for key, value in new_params.items():
                 config[key] = value
     except Exception as e:
-        print(f"An error occurred while opening the configuration file: {e}")
-        print("Running with default parameters.")
+        print(f"{timestamp} An error occurred while opening the configuration file: {e}")
+        print(f"{timestamp} Running with default parameters.")
 
     # make sure that we have all the necessary parameters
     necessary_params = ['interval_seconds', 'server']
@@ -93,12 +114,12 @@ def config_yaml():
     for param in necessary_params:
         if param not in config:
             missing_params = True
-            print(f"Missing Configuration Parameter: {param}")
+            print(f"{timestamp} Missing Configuration Parameter: {param}")
     if missing_params:
-        print("Paramters are missing from the default configuratiion file. Module will not run until these parameters are set.")
-        print("Exiting...")
+        print(f"{timestamp} Paramters are missing from the default configuratiion file. Module will not run until these parameters are set.")
+        print(f"{timestamp} Exiting...")
         sys.exit(1)
-    print(f"Module Configuration: \n{config}")
+    print(f"{timestamp} Module Configuration: \n{config}")
     return config
 
 def config_discordbot():
