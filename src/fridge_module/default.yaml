@@ -2,7 +2,7 @@
 # override configs in config.yaml by copying the parameter name and 
 # setting a new value
 interval_seconds: 5   
-door_sensor_pin: 18
+door_sensor_pin: 12
 # OLD URLS
 #server: http://localhost:3000/api/fridgedata
 #server: https://rvacf-test-bb7706080ec2.herokuapp.com/api/fridgedata

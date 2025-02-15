@@ -71,6 +71,7 @@ def main():
     CONFIG = config_yaml()
 
     # setup door sensor
+    GPIO.cleanup()
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(CONFIG['door_sensor_pin'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.add_event_detect(CONFIG['door_sensor_pin'], GPIO.BOTH, callback=door_callback, bouncetime=300)
@@ -155,13 +156,13 @@ def config_discordbot():
         DISCORD_TOKEN = os.getenv('token')
 
         if CHANNEL_ID is None or DISCORD_TOKEN is None:
-            printerr("Error: either the channel id or discord token is missing")
+            printerr("{timestamp} Error: either the channel id or discord token is missing")
 
     except AttributeError as e:
-        print(f'{e}')
+        print(f'{timestampe} {e}')
         sys.exit(1)
     except Exception as e:
-        print(f'An error has occured: {e}')
+        print(f'{timestamp} An error has occured: {e}')
 
 def send_alert_to_bot(CONFIG):
 	global DISCORD_URL, CHANEEL_ID
@@ -181,7 +182,7 @@ def send_alert_to_bot(CONFIG):
 		if response.status_code != 200 :
 			raise Exception(f'{response.status_code}\n\n{response.text}')
 	except Exception as e: 
-		print(f'\n{e}\n')
+		print(f'\n{timestamp} {e}\n')
 
 if __name__ == "__main__":
     main()
