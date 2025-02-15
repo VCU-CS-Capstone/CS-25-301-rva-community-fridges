@@ -1,7 +1,9 @@
 import yaml # pip install pyyaml
 from dotenv import load_dotenv # pip install python-dotenv
-import requests # pip install requests
-import RPi.GPIO as GPIO # if testing on a non-Pi device, comment out this line and replace the door sensor data with a test value
+import requests # pip install requests 
+# if testing on a non-Pi device, comment out this line and replace the door sensor data with a test value
+import RPi.GPIO as GPIO # pip install RPi.GPIO ---or--- sudo apt-get install python-rpi.gpio
+from datetime import datetime
 import time, sys, json, glob, signal, os
 
 CHANNEL_ID = None 
@@ -23,7 +25,7 @@ except IndexError:
 device_file = device_folder + '/w1_slave'
 
 def timestamp():
-    return f"[{datetime.now().strftime("%m-%d-%y %H:%M")}]"
+    return f"[{datetime.now().strftime('%m-%d-%y %H:%M')}]"
 
 def printerr(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
@@ -79,13 +81,13 @@ def main():
         data['t'] = read_temp()[1] if hasTemp else None # current temperature of the fridge
 
         # SEND THE DATA
-        print(f"{timestamp} Sending: {data}")
+        print(f"{timestamp()} Sending: {data}")
         res = requests.post(CONFIG['server'],json=data)
         if res.status_code >= 400:
-            print(f"{timestamp} Error sending data: {data}")
+            print(f"{timestamp()} Error sending data: {data}")
 
         # PRINT RESPONSE
-        print(f"{timestamp} Response: {res.status_code}\n\n{res.text}")
+        print(f"{timestamp()} Response: {res.status_code}\n\n{res.text}")
 
         # wait until the next interval
         time.sleep(CONFIG['interval_seconds'])
@@ -96,8 +98,8 @@ def config_yaml():
         with open('default.yaml', 'r') as def_config_file: 
             config = yaml.safe_load(def_config_file)
     except Exception as e:
-        print(f"{timestamp} An error occurred while opening the default configuration file: {e}")
-        print(f"{timestamp} Unable to start refrigerator module without default parameters. Exiting...")
+        print(f"{timestamp()} An error occurred while opening the default configuration file: {e}")
+        print(f"{timestamp()} Unable to start refrigerator module without default parameters. Exiting...")
         sys.exit(1)
     try: # override any defaults found in config.yaml
         with open('config.yaml', 'r') as config_file:
@@ -105,8 +107,8 @@ def config_yaml():
             for key, value in new_params.items():
                 config[key] = value
     except Exception as e:
-        print(f"{timestamp} An error occurred while opening the configuration file: {e}")
-        print(f"{timestamp} Running with default parameters.")
+        print(f"{timestamp()} An error occurred while opening the configuration file: {e}")
+        print(f"{timestamp()} Running with default parameters.")
 
     # make sure that we have all the necessary parameters
     necessary_params = ['interval_seconds', 'server']
@@ -114,12 +116,12 @@ def config_yaml():
     for param in necessary_params:
         if param not in config:
             missing_params = True
-            print(f"{timestamp} Missing Configuration Parameter: {param}")
+            print(f"{timestamp()} Missing Configuration Parameter: {param}")
     if missing_params:
-        print(f"{timestamp} Paramters are missing from the default configuratiion file. Module will not run until these parameters are set.")
-        print(f"{timestamp} Exiting...")
+        print(f"{timestamp()} Paramters are missing from the default configuratiion file. Module will not run until these parameters are set.")
+        print(f"{timestamp()} Exiting...")
         sys.exit(1)
-    print(f"{timestamp} Module Configuration: \n{config}")
+    print(f"{timestamp()} Module Configuration: \n{config}")
     return config
 
 def config_discordbot():
