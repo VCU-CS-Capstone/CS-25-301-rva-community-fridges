@@ -2,7 +2,7 @@ import yaml # pip install pyyaml
 from dotenv import load_dotenv # pip install python-dotenv
 import requests # pip install requests 
 # if testing on a non-Pi device, comment out this line and replace the door sensor data with a test value
-import RPi.GPIO as GPIO # pip install RPi.GPIO ---or--- sudo apt-get install python-rpi.gpio
+import RPi.GPIO as GPIO # pip install rpio-lgpio
 from datetime import datetime
 import time, sys, json, glob, signal, os, threading
 

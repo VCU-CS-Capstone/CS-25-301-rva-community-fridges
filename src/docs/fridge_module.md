@@ -175,6 +175,7 @@ c. Next, we'll connect the pins on the PlugableTerminal to the appropriate pins 
 d. Reference https://pinout.xyz to understand which are going to be used for ground, voltage, and data. With the GPIO pins of the Pi oriented closest to you, the cable for voltage (green) should be connected to the top left pin. The cable for ground (orange) should be connected to the pin on the bottom row, third from the left. The cable for data (yellow), should be connected to the pin on the top row, fourth from the left. (GPIO 4, the default for 1-wire communication). 
 
 ![Connected wires (to the Pi)]()
+![Pinout with GPIO pins labeled]()
 
 **2. Enable 1-wire communication in the Raspberry Pi software**
 
@@ -196,6 +197,23 @@ python read_temp.py
 
 **2. Assemble and connect the door sensor.**
 
+For this step you will need [a couple of female-to-female jumper wires](https://www.adafruit.com/product/1949). Linked in this tutorial are a pack of 20, 12" wires for $3.95. These wires come in various shapes and length, but I selected the 12" wires since the Pi might be somewhere in the back of the fridge, running all the way to the door. You'll need 2 for one module. 
+
+a. Go ahead and connect the jumper wires to the door sensor, and the Raspberry Pi. We'll use GPIO pin 18 and its neighboring ground pin (doesn't matter cable goes to ground or GPIO 18 -- they're interchangeable in this case).
+
+![Jumper cables connected to door sensor]()
+![Jumper cables connected to Pi]()
+
+b. This should work out of the box. You can now test it out by running our test script `door_sensor.py` by navigating to the repository and running the script:
+
+```
+cd ~/CS-25-301-rva-community-fridges/src/fridge_module
+python door_sensor.py
+```
+
+If the door sensor is working, you should see "Opened" print out when the magnets are separated, and "Closed" print out when the magnets are together. The module is ready for packaging and installation. 
+
+NOTE: Right now, there are two wires coming from the door sensor. If this makes things difficult during the installation step, feel free to tape these two wires together on ~3" intervals in order to clean the wiring up a bit.
 
 ## Installing the module in a container
 
