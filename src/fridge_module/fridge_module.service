@@ -9,8 +9,8 @@ WorkingDirectory=/opt/fridge_module
 Restart=always
 User=root
 Group=nogroup
-StandardOutput=append:/opt/fridge_module/fridge_module_log.log
-StandardError=append:/opt/fridge_module/fridge_module_err.log
+StandardOutput=journal
+StandardError=journal
 
 [Install]
 WantedBy=multi-user.target
