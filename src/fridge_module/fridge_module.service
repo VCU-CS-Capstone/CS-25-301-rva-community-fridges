@@ -1,0 +1,16 @@
+[Unit]
+Description=Community Fridge Monitoring Software
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=sudo /opt/fridge_module/venv/bin/python /opt/fridge_module/main.py
+WorkingDirectory=/opt/fridge_module
+Restart=always
+User=root
+Group=nogroup
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
