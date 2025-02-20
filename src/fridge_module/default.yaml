@@ -8,7 +8,7 @@ door_sensor_pin: 18
 #server: https://rvacf-test-bb7706080ec2.herokuapp.com/api/fridgedata
 # server: https://al6mmf5bsd.execute-api.us-east-1.amazonaws.com/flaskBot/retrieveSensorData
 # THE REAL URL
-server: https://al6mmf5bsd.execute-api.us-east-1.amazonaws.com/queryData/retrieveSensorData
+server: https://al6mmf5bsd.execute-api.us-east-1.amazonaws.com/prod/api/writeData
 
 # discord bot
 headers:
