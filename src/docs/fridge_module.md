@@ -195,7 +195,11 @@ python read_temp.py
 
 ![read_temp.py running in the terminal]()
 
-**2. Assemble and connect the door sensor.**
+**3. Assemble and connect the door sensor.**
+
+Next we'll install the magnetic contact door switch (door sensor). 
+
+![Door sensor, in package]()
 
 For this step you will need [a couple of female-to-female jumper wires](https://www.adafruit.com/product/1949). Linked in this tutorial are a pack of 20, 12" wires for $3.95. These wires come in various shapes and length, but I selected the 12" wires since the Pi might be somewhere in the back of the fridge, running all the way to the door. You'll need 2 for one module. 
 

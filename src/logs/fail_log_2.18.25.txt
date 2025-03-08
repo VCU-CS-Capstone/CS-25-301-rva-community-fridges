@@ -1,0 +1,64 @@
+Feb 18 15:16:13 cary-st-fridge sudo[1297]: Traceback (most recent call last):
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/urllib3/connection.py", line 198, in _new_conn
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     sock = connection.create_connection(
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/urllib3/util/connection.py", line 60, in create_connection
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/usr/lib/python3.11/socket.py", line 962, in getaddrinfo
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Feb 18 15:16:13 cary-st-fridge sudo[1297]: socket.gaierror: [Errno -3] Temporary failure in name resolution
+Feb 18 15:16:13 cary-st-fridge sudo[1297]: The above exception was the direct cause of the following exception:
+Feb 18 15:16:13 cary-st-fridge sudo[1297]: Traceback (most recent call last):
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     response = self._make_request(
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:                ^^^^^^^^^^^^^^^^^^^
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     raise new_e
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     self._validate_conn(conn)
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     conn.connect()
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/urllib3/connection.py", line 704, in connect
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     self.sock = sock = self._new_conn()
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:                        ^^^^^^^^^^^^^^^^
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/urllib3/connection.py", line 205, in _new_conn
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     raise NameResolutionError(self.host, self, e) from e
+Feb 18 15:16:13 cary-st-fridge sudo[1297]: urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x7f8a7dd990>: Failed to resolve 'al6mmf5bsd.execute-api.us-east-1.amazonaws.com' ([Errno -3] Temporary failure in name resolution)
+Feb 18 15:16:13 cary-st-fridge sudo[1297]: The above exception was the direct cause of the following exception:
+Feb 18 15:16:13 cary-st-fridge sudo[1297]: Traceback (most recent call last):
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     resp = conn.urlopen(
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:            ^^^^^^^^^^^^^
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     retries = retries.increment(
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:               ^^^^^^^^^^^^^^^^^^
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/urllib3/util/retry.py", line 519, in increment
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Feb 18 15:16:13 cary-st-fridge sudo[1297]: urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='al6mmf5bsd.execute-api.us-east-1.amazonaws.com', port=443): Max retries exceeded with url: /queryData/retrieveSensorData (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f8a7dd990>: Failed to resolve 'al6mmf5bsd.execute-api.us-east-1.amazonaws.com' ([Errno -3] Temporary failure in name resolution)"))
+Feb 18 15:16:13 cary-st-fridge sudo[1297]: During handling of the above exception, another exception occurred:
+Feb 18 15:16:13 cary-st-fridge sudo[1297]: Traceback (most recent call last):
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/main.py", line 187, in <module>
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     main()
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/main.py", line 107, in main
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     res = requests.post(CONFIG['server'],json=data)
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/requests/api.py", line 115, in post
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     return request("post", url, data=data, json=json, **kwargs)
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/requests/api.py", line 59, in request
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     return session.request(method=method, url=url, **kwargs)
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     resp = self.send(prep, **send_kwargs)
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     r = adapter.send(request, **kwargs)
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:   File "/opt/fridge_module/venv/lib/python3.11/site-packages/requests/adapters.py", line 700, in send
+Feb 18 15:16:13 cary-st-fridge sudo[1297]:     raise ConnectionError(e, request=request)
+Feb 18 15:16:13 cary-st-fridge sudo[1297]: requests.exceptions.ConnectionError: HTTPSConnectionPool(host='al6mmf5bsd.execute-api.us-east-1.amazonaws.com', port=443): Max retries exceeded with url: /queryData/retrieveSensorData (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f8a7dd990>: Failed to resolve 'al6mmf5bsd.execute-api.us-east-1.amazonaws.com' ([Errno -3] Temporary failure in name resolution)"))
+Feb 18 15:16:13 cary-st-fridge sudo[1287]: pam_unix(sudo:session): session closed for user root
+Feb 18 15:16:13 cary-st-fridge systemd[1]: fridge_module.service: Main process exited, code=exited, status=1/FAILURE
