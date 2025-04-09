@@ -73,7 +73,7 @@ def main():
     GPIO.add_event_detect(CONFIG['door_sensor_pin'], GPIO.BOTH, callback=door_callback, bouncetime=300)
 
     data = {
-        'p': CONFIG['fridge_id'],  # Fridge ID
+        'p': 14,  # Fridge ID
         'd': 0,  # Door count
         't': None  # Temperature
     }
