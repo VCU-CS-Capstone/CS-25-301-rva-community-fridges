@@ -5,6 +5,7 @@ import requests # pip install requests
 import RPi.GPIO as GPIO # pip install rpio-lgpio
 from datetime import datetime
 import time, sys, json, glob, signal, os, threading
+import logging
 
 
 # configure the temperature sensor
@@ -43,6 +44,7 @@ def read_temp():
     if equals_pos != -1:
         temp_string = lines[1][equals_pos+2:]
         temp_c = float(temp_string) / 1000.0
+
         return temp_c * 9.0 / 5.0 + 32.0 # convert to F
     return None # no temperature sensor
 
@@ -57,10 +59,24 @@ def door_callback(channel):
             print(f"{timestamp()} Door closed.")
 
 def monitor_temperature(interval, data):
+    logging.basicConfig(filename = 'temperature_log.log', level=logging.INFO)
     """ Thread function to read temperature at a fixed interval. """
+    alert_lock = True 
     while True:
         data['t'] = read_temp() if hasTemp else None
-        time.sleep(interval)
+        #logging.info(data['t'])
+        if data['t'] > 86.0 and alert_lock:
+            alert_lock = False
+            res = requests.get(url='https://al6mmf5bsd.execute-api.us-east-1.amazonaws.com/prod/api/sendAlert',
+                     headers= {'content-type':'application/json'}
+                    )
+            if res.status_code == 200:
+                print(f"{timestamp()} Response: {res.status_code}\n\n{res.text}") 
+            else :
+                print(res.text)
+        elif data['t'] <= 86.0 and not alert_lock:
+            alert_lock = True
+        time.sleep(.2)
 
 def main():
     global door_count
@@ -86,25 +102,48 @@ def main():
     print(f"{timestamp()} Monitoring fridge...")
 
 	# Start the module loop
+    transmit_data = False
     while True:
         # PACKAGE SENSOR DATA FOR SENDING
+        
+        # ONLY SEND DATA IF FRIDGE DOOR HAS BEEN OPEN 
+        
+            
         with door_lock:
-            data['d'] = door_count # number of times the door was opened since the last request.
-            door_count = 0
+            if door_count != 0:
+                data['d'] = door_count # number of times the door was opened since the last request.
+                door_count = 0
+                transmit_data = True 
+ 
+        if transmit_data:
 
+<<<<<<< Updated upstream
         # SEND THE DATA
         # WILL ONLY SEND IF DOOR HAS BEEN OPEN
         if door_count > 0 :
+=======
+            # SEND THE DATA
+>>>>>>> Stashed changes
             print(f"{timestamp()} Sending: {data}")
             res = requests.post(CONFIG['server'],json=data)
             if res.status_code >= 400:
                 print(f"{timestamp()} Error sending data: {data}")
+<<<<<<< Updated upstream
     
             # PRINT RESPONSE
             print(f"{timestamp()} Response: {res.status_code}\n\n{res.text}")
     
             # wait until the next interval
         time.sleep(CONFIG['interval_seconds'])
+=======
+     
+            # PRINT RESPONSE
+            print(f"{timestamp()} Response: {res.status_code}\n\n{res.text}") 
+            
+            transmit_data = False
+            # wait until the next interval
+            time.sleep(1)
+>>>>>>> Stashed changes
 
 def config_yaml():
     # load module configuration parameters
@@ -138,5 +177,10 @@ def config_yaml():
     print(f"{timestamp()} Module Configuration: \n{config}")
     return config
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 if __name__ == "__main__":
     main()
