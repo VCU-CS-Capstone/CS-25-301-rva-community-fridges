@@ -72,12 +72,6 @@ def main():
     GPIO.setup(CONFIG['door_sensor_pin'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.add_event_detect(CONFIG['door_sensor_pin'], GPIO.BOTH, callback=door_callback, bouncetime=300)
 
-    # setup discord bot
-    config_discordbot()
-    '''Method that will send alert to discord when a door has been left open	
-    send_alert_to_bot(CONFIG)
-    '''
-
     data = {
         'p': CONFIG['fridge_id'],  # Fridge ID
         'd': 0,  # Door count
@@ -142,43 +136,6 @@ def config_yaml():
         sys.exit(1)
     print(f"{timestamp()} Module Configuration: \n{config}")
     return config
-
-def config_discordbot():
-    try :
-	    #Load information from .env and checks to see if .env is configured correctly for bot
-        global CHANNEL_ID, DISCORD_TOKEN
-        load_dotenv()
-        CHANNEL_ID = os.getenv('channel_id')
-        DISCORD_TOKEN = os.getenv('token')
-
-        if CHANNEL_ID is None or DISCORD_TOKEN is None:
-            printerr(f"{timestamp()} Error: either the channel id or discord token is missing")
-
-    except AttributeError as e:
-        print(f'{timestamp()} {e}')
-        sys.exit(1)
-    except Exception as e:
-        print(f'{timestamp()} An error has occured: {e}')
-
-def send_alert_to_bot(CONFIG):
-	global DISCORD_URL, CHANEEL_ID
-	
-	#Sends this message to discord channel
-	payload = {
-		'content' : 'The fridge has been left open'
-		}
-		
-	DISCORD_URL += f'/channels/{CHANNEL_ID}/messages'
-	header = CONFIG['headers']['Discord_header']
-	header['User-Agent'] = header['User-Agent'].replace('${user-agent}', os.getenv('user_agent'))
-	header['Authorization'] = header['Authorization'].replace('${token}', os.getenv('token'))
-
-	try:
-		response = requests.post(DISCORD_URL, headers=header, json=payload)
-		if response.status_code != 200 :
-			raise Exception(f'{response.status_code}\n\n{response.text}')
-	except Exception as e: 
-		print(f'\n{timestamp()} {e}\n')
 
 if __name__ == "__main__":
     main()
